@@ -16,6 +16,7 @@ public class PrenotazioneController {
     public final PrenotazioneService prenotazioneService;
 
 
+
     @PostMapping("/{eventoId}")
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("isAuthenticated()")
