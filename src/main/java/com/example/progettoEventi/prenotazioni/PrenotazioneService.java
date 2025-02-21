@@ -3,6 +3,7 @@ package com.example.progettoEventi.prenotazioni;
 import com.example.progettoEventi.auth.AppUser;
 import com.example.progettoEventi.eventi.Evento;
 import com.example.progettoEventi.eventi.EventoRepository;
+import com.example.progettoEventi.exception.NoPostiDisponibiliException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class PrenotazioneService {
         Evento evento = eventoRepository.findById(eventoId)
                 .orElseThrow(() -> new EntityNotFoundException("Evento non trovato"));
         if (!evento.hasPostiDisponibili()) {
-            throw new IllegalStateException("Posti esauriti per questo evento");
+            throw new NoPostiDisponibiliException("Posti esauriti per questo evento");
         }
         Prenotazione prenotazione = new Prenotazione();
         prenotazione.setEvento(evento);
