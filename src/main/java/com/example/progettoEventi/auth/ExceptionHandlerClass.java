@@ -1,6 +1,7 @@
 package com.example.progettoEventi.auth;
 
 
+import com.example.progettoEventi.exception.NoPostiDisponibiliException;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolation;
@@ -17,6 +18,11 @@ import java.util.Map;
 
 @ControllerAdvice
 public class ExceptionHandlerClass extends ResponseEntityExceptionHandler {
+
+    @ExceptionHandler(value = NoPostiDisponibiliException.class)
+    protected ResponseEntity<String> handleNoPostiDisponibiliException(NoPostiDisponibiliException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
     @ExceptionHandler(value = EntityNotFoundException.class)
     protected ResponseEntity<String> entityNotFound(EntityNotFoundException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
