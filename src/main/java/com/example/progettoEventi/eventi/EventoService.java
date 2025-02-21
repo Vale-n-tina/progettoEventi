@@ -2,6 +2,7 @@ package com.example.progettoEventi.eventi;
 
 import com.example.progettoEventi.auth.AppUser;
 import jakarta.persistence.EntityExistsException;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -32,6 +33,29 @@ public class EventoService {
 
     }
 
-
+  public EventoResponseComplete update(@Valid EventoRequest request, Long id, AppUser appUser) {
+        if(!eventoRepository.existsById(id)) {
+            throw new EntityNotFoundException("L'evento non esiste");
+        }
+        Evento evento = eventoRepository.findById(id).get();
+        if (!evento.getIdOrganizzatore().equals(appUser.getId())) {
+            throw new IllegalArgumentException("Non hai i permessi per modificare questo evento");
+        }
+        BeanUtils.copyProperties(request, evento);
+        eventoRepository.save(evento);
+        EventoResponseComplete response = new EventoResponseComplete();
+        BeanUtils.copyProperties(evento, response);
+        return response;
+  }
+  public void delete(Long id, AppUser appUser) {
+        if(!eventoRepository.existsById(id)) {
+            throw new EntityNotFoundException("L'evento non esiste");
+        }
+        Evento evento = eventoRepository.findById(id).get();
+        if (!evento.getIdOrganizzatore().equals(appUser.getId())) {
+            throw new IllegalArgumentException("Non hai i permessi per eliminare questo evento");
+        }
+        eventoRepository.deleteById(id);
+  }
 
 }

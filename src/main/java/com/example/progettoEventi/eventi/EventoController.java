@@ -21,4 +21,16 @@ public class EventoController {
         return eventoService.create(request, user);
     }
 
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ORGANIZZATORE')")
+    public EventoResponseComplete update(@RequestBody EventoRequest request, @PathVariable Long id, @AuthenticationPrincipal AppUser user) {
+        return eventoService.update(request, id, user);
+    }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ORGANIZZATORE')")
+    public void delete(@PathVariable Long id, @AuthenticationPrincipal AppUser user){
+        eventoService.delete(id, user);
+    }
+
 }
