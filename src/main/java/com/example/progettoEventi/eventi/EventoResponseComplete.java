@@ -1,9 +1,7 @@
 package com.example.progettoEventi.eventi;
 
-import jakarta.persistence.*;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,19 +9,16 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 
 @Data
-@Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "eventi")
-public class Evento {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+public class EventoResponseComplete {
+    @NotBlank(message = "Il titolo non può essere vuoto")
     private String titolo;
+    @NotBlank(message = "La descrizione non può essere vuota")
     private String descrizione;
+    @Future(message = "La data non può essere nel passato")
     private Date data;
+    @NotBlank(message = "Il luogo non può essere vuoto")
     private String luogo;
     private int postiDisponibili;
-    private Long idOrganizzatore;
-
 }
